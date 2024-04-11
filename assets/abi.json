@@ -1,0 +1,127 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_content",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_ipfs",
+        "type": "string"
+      }
+    ],
+    "name": "postMedia",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_postId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TipPost",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "posts",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "postId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "TipNo",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "ipfsUrl",
+        "type": "string"
+      },
+      {
+        "internalType": "address payable",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tipCollected",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ViewAllPosts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "postId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "TipNo",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "content",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "ipfsUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "creator",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tipCollected",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct SocialMedia.Post[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
