@@ -4,11 +4,13 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ">=3.2.4 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
-  ffi: 
-  win32: 
+  
+  file_picker: 
+  
+   
   http: 
   animate_gradient:
   animated_text_kit: ^4.2.2
@@ -22,8 +24,10 @@ dependencies:
 
 dependency_overrides:
   http: 
-  win32: 
-  ffi:
+  
+  file_picker:
+
+ 
 
 dev_dependencies:
   flutter_test:
