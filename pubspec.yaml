@@ -19,7 +19,7 @@ dependencies:
 
   get: ^4.6.6
 
-  web3modal_flutter: ^3.1.2
+  web3modal_flutter: 
   flutter_ipfs: ^0.0.2
   animated_icon: ^0.0.9
   flutter_animated_button: ^2.0.3

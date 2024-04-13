@@ -12,7 +12,7 @@ class Web3Service extends GetxController {
   }
 
   final w3mService = W3MService(
-    projectId: 'a9a9881b4a61d564555fe9e76cd0980d',
+    projectId: '09c1e0a4ddd830cfbdb63bf3efc73436',
     metadata: const PairingMetadata(
       name: 'EtherFrame',
       description: 'Decentralized Photo App',
@@ -36,14 +36,14 @@ class Web3Service extends GetxController {
           jsonEncode(abiJson), // ABI object
           'SocialMedia',
         ),
-        EthereumAddress.fromHex('0xD07B2318a33579Af3057D151666508E480e83077'),
+        EthereumAddress.fromHex('0x3d76d069e27D31206b92f1BA6EC606A44dE2273f'),
       );
 
       // Get balance of wallet
       var result = await w3mService.requestReadContract(
           deployedContract: deployedContract,
-          functionName: 'ViewAllPosts',
-          rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com',
+          functionName: 'viewAllPosts',
+          rpcUrl: 'https://rpc.sepolia.org',
           parameters: []);
       print(result);
 
@@ -71,17 +71,18 @@ class Web3Service extends GetxController {
           jsonEncode(abiJson), // ABI object
           'SocialMedia',
         ),
-        EthereumAddress.fromHex('0xD07B2318a33579Af3057D151666508E480e83077'),
+        EthereumAddress.fromHex('0x3d76d069e27D31206b92f1BA6EC606A44dE2273f'),
       );
 
-await w3mService.launchConnectedWallet();
+      await w3mService.launchConnectedWallet();
       await w3mService.requestWriteContract(
-        method: "POST",
+      
+        
           topic: w3mService.session!.topic.toString(),
-          chainId: "eip155:80001",
-          rpcUrl: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
+          chainId: 'eip155:11155111',
+          rpcUrl: 'https://rpc.sepolia.org',
           deployedContract: deployedContract,
-          functionName: 'postMedia',
+          functionName: 'createPost',
           parameters: [title, ipfs],
           transaction: Transaction(
             from: EthereumAddress.fromHex(
