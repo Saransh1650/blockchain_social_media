@@ -16,6 +16,7 @@ class DialogBox extends StatelessWidget {
 
     final Web3Service w3c = Get.put(Web3Service());
     final myController = TextEditingController();
+    String text="";
 
     return Container(
       padding: const EdgeInsets.all(10),
@@ -65,6 +66,9 @@ class DialogBox extends StatelessWidget {
            TextField(
             
             controller: myController,
+            onChanged: (value) {
+              text = value;
+            },
 
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -97,7 +101,10 @@ class DialogBox extends StatelessWidget {
                 
               }
               else{
-                await w3c.callWriteFunction(myController.text,ImagePickerService.cid);
+                await w3c.w3mService.launchConnectedWallet();
+                await w3c.callWriteFunction(text,ImagePickerService.cid);
+            
+                 print("okok");
               }
               }
               catch(e){

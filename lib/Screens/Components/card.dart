@@ -1,14 +1,25 @@
+import 'package:blockchain_dapp/Screens/Components/tip_dialog_box.dart';
+import 'package:blockchain_dapp/State%20Management/web3service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:web3modal_flutter/widgets/avatars/w3m_account_avatar.dart';
 
 class Cards extends StatelessWidget {
-   const Cards({super.key});
-
+  final String content, ipfs, address;
+  final BigInt id,no;
+  Cards(
+      {super.key,
+      required this.content,
+      required this.ipfs,
+      required this.address, required this.id, required this.no});
+  final Web3Service w3c = Get.put(Web3Service());
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
-            color:Colors.white,
+            color: Colors.white,
             boxShadow: [
               BoxShadow(
                 blurStyle: BlurStyle.outer,
@@ -19,7 +30,6 @@ class Cards extends StatelessWidget {
               ),
             ],
             borderRadius: BorderRadius.all(Radius.circular(15))),
-        height: 360,
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,109 +42,96 @@ class Cards extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       height: 80,
                       child: ClipOval(
-                        child: Image.network(
-                          'https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg',
-                          fit: BoxFit.fill,
-                        ),
+                        child:
+                            W3MAccountAvatar(service: w3c.w3mService, size: 60),
                       ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    const Column(
-                      children: [Text("Marshmallow", style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),)],
+                    Column(
+                      children: [
+                        Text(
+                          address.length > 9
+                              ? '${address.substring(0, 9 ~/ 2)}...${address.substring(address.length - (9 ~/ 2))}'
+                              : address,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        )
+                      ],
                     )
                   ],
                 )
               ],
             ),
             Container(
+                alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: const Text(
-                    "Beautiful Scenery potshot completed with the following...")),
-            Stack(
+                child: Text(
+                  content,
+                  style: TextStyle(fontSize: 20),
+                )),
+            SizedBox(
+              height: 230,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft:
+                      Radius.circular(15), // Adjust the radius as needed
+                  bottomRight:
+                      Radius.circular(15), // Adjust the radius as needed
+                ),
+                child: CachedNetworkImage(
+                  height: 200,
+                  imageUrl: "https://ipfs.io/ipfs/$ipfs",
+                  alignment: Alignment.center,
+                  placeholder: (context, url) {
+                    return CircularProgressIndicator();
+                  },
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                ),
+
+                  
+                 
+                ),
+              ),
+            
+            Row(
               children: [
                 SizedBox(
-                  height: 230,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft:
-                          Radius.circular(15), // Adjust the radius as needed
-                      bottomRight:
-                          Radius.circular(15), // Adjust the radius as needed
-                    ),
-                    child: Image.network(
-                      'https://img.freepik.com/free-photo/vestrahorn-mountains-stokksnes-iceland_335224-667.jpg?size=626&ext=jpg&ga=GA1.1.735520172.1710806400&semt=ais',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  width: 10,
                 ),
-                Positioned(
-                  bottom: 10,
-                  left: 10,
-                  child: Container(
-                    height: 35,
-                    width: 90,
-                    decoration: const BoxDecoration(
-                        color: Color.fromARGB(196, 255, 235, 59),
-                        borderRadius: BorderRadius.all(Radius.circular(40))),
-                    child: const InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.currency_bitcoin,
-                            color: Colors.black,
-                          ),
-                          Text(
-                            "Reward",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-               
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      enableFeedback: true,
+                      side: BorderSide(color: Color.fromARGB(66, 0, 0, 0)),
+                        backgroundColor: Colors.white,
+                        elevation: 0,
+                        foregroundColor: Colors.black),
+                    onPressed: () {
+                      Get.defaultDialog(
+                        backgroundColor: Colors.black,
+                        title: "Tip the creator",
+                        titleStyle: TextStyle(color: Colors.white),
+                      
+                       content:  TipDialogBox(id: id));
+                    },
+                    child: Row(
+                      children: [
                         
-                Positioned(
-                  bottom: 10,
-                  left: 110,
-                  child: Container(
-                    height: 35,
-                    width: 60,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(169, 175, 76, 76),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(40),
-                      ),
-                    ),
-                    child: const Tooltip(
-                      message: 'Number of people rewarded the creator',
-                      child: InkWell(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(
-                              Icons.people,
-                              color: Colors.black,
-                            ),
-                            Text(
-                              "2",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Image.asset('assets/Ethereum_logo_2014.svg.png', height: 20,),
+                        const SizedBox(
+                          width: 10,
                         ),
-                      ),
-                    ),
-                  ),
+                        Text('Tip')
+                      ],
+                    )),
+                IconButton(
+                  icon: Icon(Icons.people),
+                  onPressed: () {},
                 ),
+                Text(no.toString())
               ],
             )
           ],

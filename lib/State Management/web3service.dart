@@ -26,7 +26,8 @@ class Web3Service extends GetxController {
   );
 
 // Register callbacks on the Web3App you'd like to use. See `Events` section.
-  Future<void> callReadFunction() async {
+  Future<List<dynamic>> callReadFunction() async {
+    List result =[];
     String abiJsonString = await rootBundle.loadString('assets/abi.json');
     List<dynamic> abiJson = jsonDecode(abiJsonString);
     // Create DeployedContract object using contract's ABI and address
@@ -36,32 +37,25 @@ class Web3Service extends GetxController {
           jsonEncode(abiJson), // ABI object
           'SocialMedia',
         ),
-        EthereumAddress.fromHex('0x3d76d069e27D31206b92f1BA6EC606A44dE2273f'),
+        EthereumAddress.fromHex('0x83572e84488a4d2b88905893F9E2c670244ab0D0'),
       );
 
       // Get balance of wallet
-      var result = await w3mService.requestReadContract(
+       result = await w3mService.requestReadContract(
           deployedContract: deployedContract,
           functionName: 'viewAllPosts',
           rpcUrl: 'https://rpc.sepolia.org',
           parameters: []);
-      print(result);
+          
+      
 
-      //await w3mService.requestWriteContract(
-      //   topic: w3mService.session!.topic.toString() ,
-      //   chainId: '11155111',
-      //   rpcUrl: 'https://1rpc.io/sepolia',
-      //   deployedContract: deployedContract,
-      //   functionName: 'createPost',
-      //   parameters: ["hi","ww.ww.ww"],
-      //   transaction: Transaction()
-      // );
     } catch (e) {
       print(e);
     }
+    return result;
   }
 
-  Future<void> callWriteFunction(String title, String ipfs) async {
+   callWriteFunction(String title, String ipfs) async {
     String abiJsonString = await rootBundle.loadString('assets/abi.json');
     List<dynamic> abiJson = jsonDecode(abiJsonString);
     // Create DeployedContract object using contract's ABI and address
@@ -71,26 +65,56 @@ class Web3Service extends GetxController {
           jsonEncode(abiJson), // ABI object
           'SocialMedia',
         ),
-        EthereumAddress.fromHex('0x3d76d069e27D31206b92f1BA6EC606A44dE2273f'),
+        EthereumAddress.fromHex('0x83572e84488a4d2b88905893F9E2c670244ab0D0'),
       );
 
-      await w3mService.launchConnectedWallet();
+     
       await w3mService.requestWriteContract(
-      
-        
           topic: w3mService.session!.topic.toString(),
           chainId: 'eip155:11155111',
-          rpcUrl: 'https://rpc.sepolia.org',
+          rpcUrl: 'https://rpc2.sepolia.org',
           deployedContract: deployedContract,
           functionName: 'createPost',
           parameters: [title, ipfs],
           transaction: Transaction(
             from: EthereumAddress.fromHex(
-                '0xAd69146A55DcA5E6a7FbA9315683C9226E2f6c33'),
+                '${w3mService.session!.address}'),
           ));
-      
+        
     } catch (e) {
       print(e);
     }
   }
-}
+
+  tipCreator(BigInt amount, BigInt id) async{
+    String abiJsonString = await rootBundle.loadString('assets/abi.json');
+    List<dynamic> abiJson = jsonDecode(abiJsonString);
+    // Create DeployedContract object using contract's ABI and address
+    try {
+      final deployedContract = DeployedContract(
+        ContractAbi.fromJson(
+          jsonEncode(abiJson), // ABI object
+          'SocialMedia',
+        ),
+        EthereumAddress.fromHex('0x83572e84488a4d2b88905893F9E2c670244ab0D0'),
+      );
+
+     
+      await w3mService.requestWriteContract(
+          
+          topic: w3mService.session!.topic.toString(),
+          chainId: 'eip155:11155111',
+          rpcUrl: 'https://rpc2.sepolia.org',
+          deployedContract: deployedContract,
+          functionName: 'tipPost',
+          parameters: [amount, id],
+          transaction: Transaction(
+            value: EtherAmount.fromBigInt(EtherUnit.ether,amount),
+            from: EthereumAddress.fromHex(
+                "${w3mService.session!.address}"),
+          ));
+        
+    } catch (e) {
+      print(e);
+    }
+  }}
